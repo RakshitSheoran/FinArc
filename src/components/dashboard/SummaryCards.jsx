@@ -222,7 +222,7 @@ function CreditBalanceCard({ className = "" }) {
       {/* Row 1: Top bar */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs min-[480px]:text-[12px] lg:text-[13px] font-semibold text-white tracking-[0.05em]">
-          FinTrack
+          FinArc
         </span>
         <div className="flex items-center gap-2">
           {/* Chip */}
