@@ -52,7 +52,7 @@ export default function SpendingDonut() {
         </button>
       </div>
 
-      {/* Donut */}
+
       <div className="relative h-[200px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -74,7 +74,7 @@ export default function SpendingDonut() {
           </PieChart>
         </ResponsiveContainer>
 
-        {/* Center label */}
+   
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <p className="text-[11px] font-semibold text-[var(--text-muted)]">
             Total Spent
@@ -85,7 +85,7 @@ export default function SpendingDonut() {
         </div>
       </div>
 
-      {/* Legend */}
+
       <div className="flex flex-col gap-2.5">
         {data.map((item, i) => (
           <div key={item.name} className="flex items-center justify-between">

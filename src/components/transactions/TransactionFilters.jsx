@@ -45,7 +45,7 @@ export default function TransactionFilters() {
 
   return (
     <div className="flex flex-wrap items-center gap-2 flex-1 min-w-0">
-      {/* Search */}
+
       <div className="relative flex-1 min-w-[160px]">
         <Search
           size={13}
@@ -60,10 +60,9 @@ export default function TransactionFilters() {
         />
       </div>
 
-      {/* Divider */}
       <div className="w-px h-[22px] bg-[var(--border)] shrink-0" />
 
-      {/* Dropdowns */}
+
       <FilterSelect
         value={filters.category}
         onChange={(e) => setFilter('category', e.target.value)}

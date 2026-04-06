@@ -28,7 +28,7 @@ export default function Sidebar() {
 
   return (
     <aside className="h-screen flex flex-col fixed left-0 top-0 z-40 w-[240px] bg-[var(--bg-secondary)] border-r border-[var(--border)]">
-      {/* Logo */}
+
       <div className="flex items-center gap-3 px-5 h-[64px] shrink-0 border-b border-[var(--border)]">
         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-[var(--accent)]">
           <TrendingUp size={15} color="#fff" />
@@ -38,7 +38,7 @@ export default function Sidebar() {
         </span>
       </div>
 
-      {/* Nav links */}
+   
       <nav className="flex-1 px-3 py-4 flex flex-col gap-0.5 overflow-y-auto">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
@@ -55,12 +55,12 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      {/* Divider */}
+      
       <div className="mx-3 border-t border-[var(--border)]" />
 
-      {/* Bottom section */}
+
       <div className="px-3 py-4 flex flex-col gap-0.5">
-        {/* Role switcher */}
+   
         <button
           onClick={toggleRole}
           className="sidebar-link"

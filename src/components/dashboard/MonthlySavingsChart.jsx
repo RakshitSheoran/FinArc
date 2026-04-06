@@ -46,7 +46,7 @@ function CustomTooltip({ active, payload }) {
 export default function MonthlySavingsChart() {
   return (
     <div className="flex flex-col gap-1 bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-5 shadow-md">
-      {/* Header */}
+
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="font-bold text-base text-[var(--text-primary)]">
@@ -57,7 +57,6 @@ export default function MonthlySavingsChart() {
           </p>
         </div>
 
-        {/* Avg summary pill */}
         <div className="bg-[var(--bg-primary)] border border-[var(--border)] rounded-[10px] px-3 py-[6px] text-right shrink-0">
           <p className="text-[11px] text-[var(--text-secondary)] mb-[2px]">
             Avg. Monthly Savings
@@ -68,7 +67,7 @@ export default function MonthlySavingsChart() {
         </div>
       </div>
 
-      {/* Chart */}
+
       <div className="h-[200px] sm:h-[220px] mt-3">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart

@@ -12,9 +12,9 @@ export default function Transactions() {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Unified filter + table card */}
+
       <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl overflow-hidden">
-        {/* Filter bar */}
+ 
         <div className="flex items-center gap-3 flex-wrap px-5 py-3 border-b border-[var(--border)]">
           <TransactionFilters />
 
@@ -29,7 +29,7 @@ export default function Transactions() {
           )}
         </div>
 
-        {/* Table + pagination */}
+
         <TransactionTable />
       </div>
 

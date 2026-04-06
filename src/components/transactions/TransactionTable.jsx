@@ -156,7 +156,7 @@ export default function TransactionTable() {
         </table>
       </div>
 
-      {/* Pagination */}
+
       <div className="flex items-center justify-between px-5 py-[10px] border-t border-[var(--border)]">
         <p className="text-xs text-[var(--text-muted)]">
           {filtered.length === 0
@@ -184,7 +184,7 @@ export default function TransactionTable() {
         </div>
       </div>
 
-      {/* Edit modal — rendered here so it has access to the transaction object */}
+
       {editingTransaction && (
         <AddTransactionModal
           transaction={editingTransaction}

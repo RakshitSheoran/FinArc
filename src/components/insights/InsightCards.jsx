@@ -54,7 +54,7 @@ export default function InsightCards() {
             className="rounded-r-xl rounded-l-none border-l-[3px] p-4 flex flex-col justify-between min-h-[110px] bg-[var(--bg-card)]"
             style={{ borderLeftColor: item.borderColor }}
           >
-            {/* Top: icon + label */}
+
             <div className="flex items-center gap-2">
               <div
                 className="w-7 h-7 rounded-md flex items-center justify-center shrink-0"
@@ -67,7 +67,6 @@ export default function InsightCards() {
               </p>
             </div>
 
-            {/* Bottom: category + amount */}
             <div>
               <p className="text-[13px] font-medium text-[var(--text-primary)]">
                 {item.category}

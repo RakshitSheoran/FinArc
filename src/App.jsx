@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Layout from './components/layout/Layout'
-import Dashboard from './pages/Dashboard'
-import Transactions from './pages/Transactions'
-import Insights from './pages/Insights'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import Dashboard from "./pages/Dashboard";
+import Transactions from "./pages/Transactions";
+import Insights from "./pages/Insights";
 
 export default function App() {
   return (
@@ -15,5 +15,5 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }

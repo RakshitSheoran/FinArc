@@ -43,7 +43,7 @@ const cards = [
   },
 ];
 
-/* ─── Edit Goal Modal ─── */
+
 function EditGoalModal({ onClose }) {
   const { monthlyGoal, setMonthlyGoal } = useStore();
   const [value, setValue] = useState(String(monthlyGoal));
@@ -102,7 +102,7 @@ function EditGoalModal({ onClose }) {
   );
 }
 
-/* ─── Monthly Goal Card ─── */
+
 function MonthlyGoalCard() {
   const { role, monthlyGoal } = useStore();
   const [editOpen, setEditOpen] = useState(false);
@@ -116,7 +116,7 @@ function MonthlyGoalCard() {
   return (
     <>
       <div className="border-t border-r border-b border-l-[3px] border-[var(--border)] border-l-[#F59E0B] rounded-2xl p-3 md:p-4 lg:p-5 bg-[var(--bg-card)] flex flex-col shadow-md">
-        {/* Top row */}
+      
         <div className="flex justify-between items-center mb-3">
           <div className="flex items-center gap-[10px]">
             <div className="w-[30px] h-[30px] rounded-[8px] md:w-8 md:h-8 md:rounded-[9px] lg:w-9 lg:h-9 lg:rounded-[10px] bg-[rgba(245,158,11,0.12)] flex items-center justify-center shrink-0">
@@ -135,7 +135,7 @@ function MonthlyGoalCard() {
           )}
         </div>
 
-        {/* Amount row */}
+  
         <div className="flex items-baseline gap-1 flex-wrap mb-[2px]">
           <span className="text-lg md:text-xl lg:text-2xl font-bold text-[var(--text-primary)] leading-none">
             {formatCurrency(current)}
@@ -146,7 +146,6 @@ function MonthlyGoalCard() {
           </span>
         </div>
 
-        {/* Progress bar */}
         <div className="w-full h-2 bg-[rgba(255,255,255,0.08)] rounded-[4px] mt-3 mb-[6px] overflow-hidden shrink-0">
           <div
             className="h-full rounded-[4px] transition-[width] duration-[400ms] ease-in-out"
@@ -154,7 +153,7 @@ function MonthlyGoalCard() {
           />
         </div>
 
-        {/* Bottom row */}
+
         <div className="flex justify-between items-center mt-auto">
           <span className="text-xs text-[var(--text-muted)]">
             {formatCurrency(remaining)} remaining
@@ -170,7 +169,7 @@ function MonthlyGoalCard() {
   );
 }
 
-/* ─── Credit Balance Card ─── */
+
 function CreditBalanceCard({ className = "" }) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
@@ -210,7 +209,7 @@ function CreditBalanceCard({ className = "" }) {
         transition: "box-shadow 0.3s ease, transform 0.3s ease",
       }}
     >
-      {/* Shine streak */}
+
       <div
         className="absolute top-[-50%] left-[-50%] w-[60%] h-[200%] pointer-events-none bg-[linear-gradient(105deg,transparent_40%,rgba(255,255,255,0.08)_50%,transparent_60%)]"
         style={{
@@ -219,13 +218,12 @@ function CreditBalanceCard({ className = "" }) {
         }}
       />
 
-      {/* Row 1: Top bar */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-xs min-[480px]:text-[12px] lg:text-[13px] font-semibold text-white tracking-[0.05em]">
           FinArc
         </span>
         <div className="flex items-center gap-2">
-          {/* Chip */}
+
           <div className="relative overflow-hidden shrink-0 rounded-[4px] bg-[linear-gradient(135deg,#D4AF37,#F5E06E,#B8860B)] w-[22px] h-[17px] md:w-[26px] md:h-[20px] lg:w-8 lg:h-6">
             <div
               className="absolute inset-0"
@@ -242,17 +240,17 @@ function CreditBalanceCard({ className = "" }) {
         </div>
       </div>
 
-      {/* Row 2: Balance label */}
+
       <p className="text-[10px] text-[rgba(255,255,255,0.6)] uppercase tracking-[0.12em] mb-1">
         YOUR BALANCE
       </p>
 
-      {/* Row 3: Balance amount — hero element */}
+
       <p className="text-2xl min-[480px]:text-3xl lg:text-4xl font-extrabold tracking-[-0.03em] text-white my-1 leading-none whitespace-nowrap">
         {formatCurrency(28891.13)}
       </p>
 
-      {/* Row 4: % change badge */}
+
       <div className="flex items-center gap-[6px] mb-3 md:mb-[14px]">
         <span className="bg-[rgba(255,255,255,0.2)] text-white text-xs font-bold py-[2px] px-2 rounded-full leading-[1.6] inline-flex items-center">
           ↑ 15%
@@ -262,10 +260,10 @@ function CreditBalanceCard({ className = "" }) {
         </span>
       </div>
 
-      {/* Row 5: Divider */}
+
       <div className="hidden min-[480px]:block border-t border-[rgba(255,255,255,0.12)] mb-3 md:mb-[14px]" />
 
-      {/* Row 6: Two mini stats */}
+
       <div className="hidden min-[480px]:flex items-stretch">
         <div className="flex-1 pr-3 md:pr-4">
           <p className="text-[9px] text-[rgba(255,255,255,0.5)] uppercase tracking-[0.1em] mb-[2px]">
@@ -286,10 +284,10 @@ function CreditBalanceCard({ className = "" }) {
         </div>
       </div>
 
-      {/* Row 7: Divider */}
+
       <div className="hidden min-[480px]:block border-t border-[rgba(255,255,255,0.12)] mt-3 md:mt-[14px]" />
 
-      {/* Row 8: Bottom bar — pushed to bottom */}
+
       <div className="hidden min-[480px]:flex justify-between items-end mt-auto pt-3 md:pt-[14px]">
         <div>
           <p className="text-[9px] text-[rgba(255,255,255,0.5)] uppercase tracking-[0.1em] mb-[2px]">
@@ -312,7 +310,7 @@ function CreditBalanceCard({ className = "" }) {
   );
 }
 
-/* ─── Side Card ─── */
+
 function SideCard({ card }) {
   const Icon = card.icon;
   const isUp = card.changeDir === "up";
@@ -352,25 +350,22 @@ function SideCard({ card }) {
   );
 }
 
-/* ─── Summary Cards Grid ─── */
 export default function SummaryCards() {
   const [savings, expenses, income] = cards;
 
   return (
     <div className="grid grid-cols-2 gap-[14px]">
-      {/* Credit Card — col 1, rows 1+2 */}
+
       <CreditBalanceCard className="[grid-row:span_2]" />
 
-      {/* Savings — col 2, row 1 */}
+
       <SideCard card={savings} />
 
-      {/* Expenses — col 2, row 2 */}
       <SideCard card={expenses} />
 
-      {/* Goals — col 1, row 3 */}
       <MonthlyGoalCard />
 
-      {/* Income — col 2, row 3 */}
+
       <SideCard card={income} />
     </div>
   );

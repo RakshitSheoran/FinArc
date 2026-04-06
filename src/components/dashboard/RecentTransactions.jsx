@@ -73,7 +73,7 @@ export default function RecentTransactions() {
                   : "none",
             }}
           >
-            {/* Neutral category avatar */}
+
             <div className="flex items-center justify-center shrink-0 rounded-full font-bold text-sm w-9 h-9 bg-[rgba(255,255,255,0.06)] text-[var(--text-secondary)]">
               {tx.category[0]}
             </div>

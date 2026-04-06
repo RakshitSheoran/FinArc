@@ -77,13 +77,13 @@ export default function AnalyticsChart() {
 
   return (
     <div className="card flex flex-col gap-4 shadow-md">
-      {/* Header */}
+  
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h2 className="font-bold text-base text-[var(--text-primary)]">
           Analytics
         </h2>
         <div className="flex items-center gap-2">
-          {/* Toggle pills */}
+       
           <button
             onClick={() => setShowIncome((v) => !v)}
             className={`badge transition-all ${
@@ -105,7 +105,7 @@ export default function AnalyticsChart() {
             Expenses
           </button>
 
-          {/* Period selector */}
+    
           <div className="relative">
             <button
               onClick={() => setDropdownOpen((v) => !v)}
@@ -138,7 +138,7 @@ export default function AnalyticsChart() {
         </div>
       </div>
 
-      {/* Chart */}
+
       <div className="h-[200px] sm:h-[220px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart

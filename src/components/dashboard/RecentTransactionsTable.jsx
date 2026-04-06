@@ -56,7 +56,7 @@ export default function RecentTransactionsTable() {
         overflow: "hidden",
       }}
     >
-      {/* Header */}
+
       <div
         className="flex items-center justify-between"
         style={{
@@ -79,7 +79,7 @@ export default function RecentTransactionsTable() {
         </button>
       </div>
 
-      {/* Rows */}
+   
       {transactions.map((tx, i) => (
         <div
           key={tx.id}
@@ -97,7 +97,7 @@ export default function RecentTransactionsTable() {
             (e.currentTarget.style.background = "transparent")
           }
         >
-          {/* Icon circle */}
+
           <div
             className="flex items-center justify-center shrink-0 rounded-full font-bold text-sm"
             style={{
@@ -110,7 +110,7 @@ export default function RecentTransactionsTable() {
             {tx.category[0]}
           </div>
 
-          {/* Name + date */}
+
           <div className="flex-1 min-w-0">
             <p
               className="text-sm font-semibold"
@@ -128,7 +128,7 @@ export default function RecentTransactionsTable() {
             </p>
           </div>
 
-          {/* Category badge — hidden on mobile */}
+
           <span
             className="hidden sm:inline-flex shrink-0"
             style={{
@@ -144,7 +144,7 @@ export default function RecentTransactionsTable() {
             {tx.category}
           </span>
 
-          {/* Amount */}
+     
           <span
             className="text-sm font-bold shrink-0"
             style={{
@@ -157,7 +157,7 @@ export default function RecentTransactionsTable() {
             {formatCurrency(tx.amount)}
           </span>
 
-          {/* Status badge — hidden on small screens */}
+      
           <span
             className="hidden md:inline-flex shrink-0"
             style={{

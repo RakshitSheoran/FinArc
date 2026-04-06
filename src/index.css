@@ -128,8 +128,6 @@
   .btn-primary:hover {
     background: var(--accent-hover);
   }
-
-  /* Credit Balance Card — background only; padding handled by Tailwind on the element */
   .credit-card-balance {
     background:
       radial-gradient(circle at 85% 15%, rgba(255,255,255,0.18) 0%, transparent 60%),

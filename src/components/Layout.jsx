@@ -64,9 +64,9 @@ function RoleSwitcher() {
 export default function Layout() {
   return (
     <div className="flex min-h-screen bg-slate-950">
-      {/* Desktop Sidebar */}
+ 
       <aside className="hidden md:flex w-60 shrink-0 flex-col border-r border-slate-800 bg-slate-900">
-        {/* Logo */}
+    
         <div className="flex items-center gap-2.5 px-5 py-5 border-b border-slate-800">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600">
             <TrendingUp size={16} className="text-white" />
@@ -74,7 +74,6 @@ export default function Layout() {
           <span className="font-semibold text-slate-100 tracking-tight">FinanceOS</span>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 space-y-1 p-3 pt-4">
           {navItems.map(({ to, label, icon: Icon }) => (
             <NavLink
@@ -95,20 +94,20 @@ export default function Layout() {
           ))}
         </nav>
 
-        {/* Role Switcher */}
+
         <div className="border-t border-slate-800 p-3">
           <RoleSwitcher />
         </div>
       </aside>
 
-      {/* Main content */}
+
       <div className="flex flex-1 flex-col min-w-0">
         <main className="flex-1 overflow-y-auto p-6 pb-24 md:pb-6">
           <Outlet />
         </main>
       </div>
 
-      {/* Mobile Bottom Tab Bar */}
+
       <nav className="fixed bottom-0 left-0 right-0 z-50 flex border-t border-slate-800 bg-slate-900 md:hidden">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
