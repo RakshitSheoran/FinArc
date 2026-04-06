@@ -1,35 +1,59 @@
-import { create } from "zustand";
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-const useStore = create((set) => ({
-  role: "ADMIN",
-  toggleRole: () =>
-    set((state) => ({ role: state.role === "ADMIN" ? "VIEWER" : "ADMIN" })),
+const useStore = create(
+  persist(
+    (set) => ({
+      transactions: [],
+      addTransaction: (transaction) =>
+        set((state) => ({
+          transactions: [transaction, ...state.transactions],
+        })),
+      editTransaction: (id, updated) =>
+        set((state) => ({
+          transactions: state.transactions.map((t) =>
+            t.id === id ? { ...t, ...updated } : t
+          ),
+        })),
+      deleteTransaction: (id) =>
+        set((state) => ({
+          transactions: state.transactions.filter((t) => t.id !== id),
+        })),
 
-  transactions: [],
+      role: 'ADMIN',
+      toggleRole: () =>
+        set((state) => ({
+          role: state.role === 'ADMIN' ? 'VIEWER' : 'ADMIN',
+        })),
 
-  filters: {
-    search: "",
-    category: "All",
-    type: "All",
-    month: "All",
-  },
-  setFilter: (key, value) =>
-    set((state) => ({ filters: { ...state.filters, [key]: value } })),
+      filters: {
+        search: '',
+        category: 'All',
+        type: 'All',
+        month: 'All',
+      },
+      setFilter: (key, value) =>
+        set((state) => ({
+          filters: { ...state.filters, [key]: value },
+        })),
 
-  darkMode: localStorage.getItem("darkMode") !== "false",
-  toggleDarkMode: () =>
-    set((state) => {
-      const next = !state.darkMode;
-      localStorage.setItem("darkMode", String(next));
-      return { darkMode: next };
+      darkMode: true,
+      toggleDarkMode: () =>
+        set((state) => ({ darkMode: !state.darkMode })),
+
+      monthlyGoal: 100000,
+      setMonthlyGoal: (amount) => set({ monthlyGoal: amount }),
     }),
+    {
+      name: 'fintrack-storage',
+      partialize: (state) => ({
+        transactions: state.transactions,
+        role: state.role,
+        darkMode: state.darkMode,
+        monthlyGoal: state.monthlyGoal,
+      }),
+    }
+  )
+)
 
-  monthlyGoal: Number(localStorage.getItem("monthlyGoal")) || 25000,
-  setMonthlyGoal: (amount) =>
-    set(() => {
-      localStorage.setItem("monthlyGoal", String(amount));
-      return { monthlyGoal: amount };
-    }),
-}));
-
-export default useStore;
+export default useStore

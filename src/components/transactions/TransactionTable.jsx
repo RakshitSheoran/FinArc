@@ -2,19 +2,7 @@ import { useState } from 'react'
 import { Pencil, Trash2, ChevronLeft, ChevronRight, Inbox } from 'lucide-react'
 import useStore from '../../store/useStore'
 import { formatCurrency, formatDate } from '../../utils/formatters'
-
-const allTransactions = [
-  { id: 1,  date: '2024-01-15', description: 'Whole Foods Market',  category: 'Food',          type: 'Expense', amount: -84.50,   month: 'January' },
-  { id: 2,  date: '2024-01-14', description: 'Monthly Salary',       category: 'Income',        type: 'Income',  amount: 5200.00,  month: 'January' },
-  { id: 3,  date: '2024-01-13', description: 'Netflix Subscription', category: 'Entertainment', type: 'Expense', amount: -15.99,   month: 'January' },
-  { id: 4,  date: '2024-01-12', description: 'Electric Bill',        category: 'Utilities',     type: 'Expense', amount: -94.20,   month: 'January' },
-  { id: 5,  date: '2024-01-11', description: 'Freelance Project',    category: 'Income',        type: 'Income',  amount: 1200.00,  month: 'January' },
-  { id: 6,  date: '2024-01-10', description: 'Uber Ride',            category: 'Transport',     type: 'Expense', amount: -18.40,   month: 'January' },
-  { id: 7,  date: '2024-01-09', description: 'Rent Payment',         category: 'Rent',          type: 'Expense', amount: -1500.00, month: 'January' },
-  { id: 8,  date: '2024-01-08', description: 'Amazon Purchase',      category: 'Shopping',      type: 'Expense', amount: -67.30,   month: 'January' },
-  { id: 9,  date: '2024-01-07', description: 'Gym Membership',       category: 'Health',        type: 'Expense', amount: -45.00,   month: 'January' },
-  { id: 10, date: '2024-01-06', description: 'Dividend Income',      category: 'Income',        type: 'Income',  amount: 320.00,   month: 'January' },
-]
+import AddTransactionModal from './AddTransactionModal'
 
 const PAGE_SIZE = 6
 
@@ -27,7 +15,7 @@ function CategoryPill({ children }) {
 }
 
 function TypePill({ type }) {
-  const isIncome = type === 'Income'
+  const isIncome = type === 'income'
   return (
     <span
       className={`inline-flex items-center text-[11px] font-semibold px-[10px] py-[3px] rounded-full tracking-[0.1px] whitespace-nowrap ${
@@ -36,30 +24,45 @@ function TypePill({ type }) {
           : 'bg-[rgba(248,113,113,0.12)] text-[#F87171]'
       }`}
     >
-      {type}
+      {isIncome ? 'Income' : 'Expense'}
     </span>
   )
 }
 
 export default function TransactionTable() {
-  const { filters, role } = useStore()
+  const { transactions, filters, role, deleteTransaction } = useStore()
+  const [editingTransaction, setEditingTransaction] = useState(null)
   const [page, setPage] = useState(1)
   const isAdmin = role === 'ADMIN'
 
-  const filtered = allTransactions.filter((tx) => {
-    const matchSearch =
-      !filters.search ||
-      tx.description.toLowerCase().includes(filters.search.toLowerCase()) ||
-      tx.category.toLowerCase().includes(filters.search.toLowerCase())
-    const matchCategory = filters.category === 'All' || tx.category === filters.category
-    const matchType = filters.type === 'All' || tx.type === filters.type
-    const matchMonth = filters.month === 'All' || tx.month === filters.month
+  const filtered = transactions.filter((t) => {
+    const matchSearch = t.description
+      .toLowerCase()
+      .includes((filters.search || '').toLowerCase())
+    const matchCategory =
+      !filters.category || filters.category === 'All'
+        ? true
+        : t.category === filters.category
+    const matchType =
+      !filters.type || filters.type === 'All'
+        ? true
+        : t.type === filters.type
+    const matchMonth =
+      !filters.month || filters.month === 'All'
+        ? true
+        : new Date(t.date + 'T00:00:00').toLocaleString('en-US', { month: 'long' }) === filters.month
     return matchSearch && matchCategory && matchType && matchMonth
   })
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
   const paged = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+
+  const handleDelete = (id) => {
+    if (window.confirm('Delete this transaction?')) {
+      deleteTransaction(id)
+    }
+  }
 
   return (
     <>
@@ -88,7 +91,11 @@ export default function TransactionTable() {
                     <p className="text-[15px] font-semibold text-[var(--text-secondary)]">
                       No transactions found
                     </p>
-                    <p className="text-[13px] text-[var(--text-muted)]">Try adjusting your filters</p>
+                    <p className="text-[13px] text-[var(--text-muted)]">
+                      {transactions.length === 0
+                        ? 'Add your first transaction using the button above'
+                        : 'Try adjusting your filters'}
+                    </p>
                   </div>
                 </td>
               </tr>
@@ -118,19 +125,25 @@ export default function TransactionTable() {
                   <td className="px-5 py-[11px] text-right">
                     <span
                       className="text-sm font-bold"
-                      style={{ color: tx.type === 'Income' ? '#3DD68C' : '#F87171' }}
+                      style={{ color: tx.type === 'income' ? '#3DD68C' : '#F87171' }}
                     >
-                      {tx.type === 'Income' ? '+' : '-'}
+                      {tx.type === 'income' ? '+' : '-'}
                       {formatCurrency(tx.amount)}
                     </span>
                   </td>
                   {isAdmin && (
                     <td className="px-5 py-[11px]">
                       <div className="flex items-center gap-1.5">
-                        <button className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(108,99,255,0.14)] hover:text-[var(--accent)]">
+                        <button
+                          onClick={() => setEditingTransaction(tx)}
+                          className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(108,99,255,0.14)] hover:text-[var(--accent)]"
+                        >
                           <Pencil size={13} />
                         </button>
-                        <button className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(248,113,113,0.14)] hover:text-[#F87171]">
+                        <button
+                          onClick={() => handleDelete(tx.id)}
+                          className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(248,113,113,0.14)] hover:text-[#F87171]"
+                        >
                           <Trash2 size={13} />
                         </button>
                       </div>
@@ -170,6 +183,14 @@ export default function TransactionTable() {
           </button>
         </div>
       </div>
+
+      {/* Edit modal — rendered here so it has access to the transaction object */}
+      {editingTransaction && (
+        <AddTransactionModal
+          transaction={editingTransaction}
+          onClose={() => setEditingTransaction(null)}
+        />
+      )}
     </>
   )
 }

@@ -1,8 +1,8 @@
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react'
 import useStore from '../../store/useStore'
 
-const categories = ['All', 'Food', 'Income', 'Entertainment', 'Utilities', 'Transport', 'Rent', 'Shopping', 'Health']
-const types = ['All', 'Income', 'Expense']
+const categories = ['All', 'Food', 'Transport', 'Entertainment', 'Utilities', 'Health', 'Rent', 'Shopping', 'Freelance', 'Salary', 'Other']
+const types = ['All', 'income', 'expense']
 const months = [
   'All', 'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December',
@@ -40,7 +40,7 @@ export default function TransactionFilters() {
   const { filters, setFilter } = useStore()
 
   const categoryOptions = categories.map((c) => ({ value: c, label: c === 'All' ? 'All Categories' : c }))
-  const typeOptions     = types.map((t)  => ({ value: t, label: t === 'All' ? 'All Types' : t }))
+  const typeOptions     = types.map((t)  => ({ value: t, label: t === 'All' ? 'All Types' : t === 'income' ? 'Income' : 'Expense' }))
   const monthOptions    = months.map((m) => ({ value: m, label: m === 'All' ? 'All Months' : m }))
 
   return (
