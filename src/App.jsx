@@ -7,6 +7,7 @@ import Insights from "./pages/Insights";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
+//Routes
 export default function App() {
   return (
     <BrowserRouter>
