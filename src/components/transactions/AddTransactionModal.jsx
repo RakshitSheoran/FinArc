@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import useStore from '../../store/useStore'
+import { api } from '../../services/api'
 
 const CATEGORIES = ['Food', 'Transport', 'Entertainment', 'Utilities', 'Health', 'Rent', 'Salary', 'Freelance', 'Other']
 
@@ -13,7 +14,7 @@ const defaultForm = {
 }
 
 const AddTransactionModal = ({ transaction = null, onClose }) => {
-  const { addTransaction, editTransaction } = useStore()
+  const { addTransactionLocal, editTransactionLocal } = useStore()
   const isEditing = transaction !== null
 
   const [form, setForm] = useState(
@@ -23,44 +24,45 @@ const AddTransactionModal = ({ transaction = null, onClose }) => {
           amount: transaction.amount,
           category: transaction.category,
           type: transaction.type,
-          date: transaction.date,
+          date: transaction.date.split('T')[0],
         }
       : defaultForm
   )
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = () => {
-    if (!form.description.trim()) {
-      setError('Description is required')
-      return
-    }
-    if (!form.amount || isNaN(form.amount) || parseFloat(form.amount) <= 0) {
-      setError('Enter a valid amount')
-      return
-    }
+  const handleSubmit = async () => {
+    if (!form.description.trim()) { setError('Description is required'); return }
+    if (!form.amount || isNaN(form.amount) || parseFloat(form.amount) <= 0) { setError('Enter a valid amount'); return }
     setError('')
+    setLoading(true)
 
-    if (isEditing) {
-      editTransaction(transaction.id, {
-        ...form,
-        amount: parseFloat(form.amount),
-      })
-    } else {
-      addTransaction({
-        id: Date.now(),
+    try {
+      const payload = {
         description: form.description.trim(),
         amount: parseFloat(form.amount),
         category: form.category,
         type: form.type,
         date: form.date,
-        status: 'Completed',
-      })
+      }
+
+      if (isEditing) {
+        const updated = await api.editTransaction(transaction._id, payload)
+        editTransactionLocal(transaction._id, updated)
+      } else {
+        const created = await api.addTransaction(payload)
+        addTransactionLocal(created)
+      }
+      onClose()
+    } catch (err) {
+      setError(err.message || 'Something went wrong')
+    } finally {
+      setLoading(false)
     }
-    onClose()
   }
 
   return (
@@ -163,9 +165,10 @@ const AddTransactionModal = ({ transaction = null, onClose }) => {
           </button>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 rounded-lg text-sm text-white bg-[#6C63FF] cursor-pointer"
+            disabled={loading}
+            className="px-4 py-2 rounded-lg text-sm text-white bg-[#6C63FF] cursor-pointer disabled:opacity-60"
           >
-            {isEditing ? 'Save Changes' : 'Add Transaction'}
+            {loading ? 'Saving...' : isEditing ? 'Save Changes' : 'Add Transaction'}
           </button>
         </div>
       </div>

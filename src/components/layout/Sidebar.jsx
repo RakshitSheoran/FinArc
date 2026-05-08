@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ArrowLeftRight,
@@ -24,7 +24,13 @@ const bottomLinks = [
 ];
 
 export default function Sidebar() {
-  const { role, toggleRole } = useStore();
+  const { logout } = useStore();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <aside className="h-screen flex flex-col fixed left-0 top-0 z-40 w-[240px] bg-[var(--bg-secondary)] border-r border-[var(--border)]">
@@ -33,21 +39,16 @@ export default function Sidebar() {
         <div className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 bg-[var(--accent)]">
           <TrendingUp size={15} color="#fff" />
         </div>
-        <span className="font-bold text-[17px] text-[var(--text-primary)]">
-          FinArc
-        </span>
+        <span className="font-bold text-[17px] text-[var(--text-primary)]">FinArc</span>
       </div>
 
-   
       <nav className="flex-1 px-3 py-4 flex flex-col gap-0.5 overflow-y-auto">
         {navItems.map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             end={to === "/"}
-            className={({ isActive }) =>
-              `sidebar-link${isActive ? " active" : ""}`
-            }
+            className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}
           >
             <Icon size={17} />
             {label}
@@ -55,35 +56,9 @@ export default function Sidebar() {
         ))}
       </nav>
 
-      
       <div className="mx-3 border-t border-[var(--border)]" />
 
-
       <div className="px-3 py-4 flex flex-col gap-0.5">
-   
-        <button
-          onClick={toggleRole}
-          className="sidebar-link"
-          title="Click to switch role"
-        >
-          <span
-            className="badge"
-            style={{
-              background:
-                role === "ADMIN"
-                  ? "rgba(108,99,255,0.15)"
-                  : "rgba(255,255,255,0.08)",
-              color:
-                role === "ADMIN" ? "var(--accent)" : "var(--text-secondary)",
-            }}
-          >
-            {role}
-          </span>
-          <span className="text-[13.5px] text-[var(--text-secondary)]">
-            Switch Role
-          </span>
-        </button>
-
         {bottomLinks.map(({ icon: Icon, label }) => (
           <button key={label} className="sidebar-link">
             <Icon size={17} />
@@ -91,7 +66,7 @@ export default function Sidebar() {
           </button>
         ))}
 
-        <button className="sidebar-link logout-btn">
+        <button onClick={handleLogout} className="sidebar-link logout-btn">
           <LogOut size={17} />
           Logout
         </button>

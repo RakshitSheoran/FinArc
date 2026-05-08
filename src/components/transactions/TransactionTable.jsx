@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Pencil, Trash2, ChevronLeft, ChevronRight, Inbox } from 'lucide-react'
 import useStore from '../../store/useStore'
+import { api } from '../../services/api'
 import { formatCurrency, formatDate } from '../../utils/formatters'
 import AddTransactionModal from './AddTransactionModal'
 
@@ -30,27 +31,22 @@ function TypePill({ type }) {
 }
 
 export default function TransactionTable() {
-  const { transactions, filters, role, deleteTransaction } = useStore()
+  const { transactions, filters, deleteTransactionLocal } = useStore()
   const [editingTransaction, setEditingTransaction] = useState(null)
   const [page, setPage] = useState(1)
-  const isAdmin = role === 'ADMIN'
 
   const filtered = transactions.filter((t) => {
     const matchSearch = t.description
       .toLowerCase()
       .includes((filters.search || '').toLowerCase())
     const matchCategory =
-      !filters.category || filters.category === 'All'
-        ? true
-        : t.category === filters.category
+      !filters.category || filters.category === 'All' ? true : t.category === filters.category
     const matchType =
-      !filters.type || filters.type === 'All'
-        ? true
-        : t.type === filters.type
+      !filters.type || filters.type === 'All' ? true : t.type === filters.type
     const matchMonth =
       !filters.month || filters.month === 'All'
         ? true
-        : new Date(t.date + 'T00:00:00').toLocaleString('en-US', { month: 'long' }) === filters.month
+        : new Date(t.date).toLocaleString('en-US', { month: 'long' }) === filters.month
     return matchSearch && matchCategory && matchType && matchMonth
   })
 
@@ -58,9 +54,13 @@ export default function TransactionTable() {
   const safePage = Math.min(page, totalPages)
   const paged = filtered.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
 
-  const handleDelete = (id) => {
-    if (window.confirm('Delete this transaction?')) {
-      deleteTransaction(id)
+  const handleDelete = async (id) => {
+    if (!window.confirm('Delete this transaction?')) return
+    try {
+      await api.deleteTransaction(id)
+      deleteTransactionLocal(id)
+    } catch {
+      alert('Failed to delete transaction')
     }
   }
 
@@ -70,7 +70,7 @@ export default function TransactionTable() {
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-[var(--border)]">
-              {['Date', 'Description', 'Category', 'Type', 'Amount', ...(isAdmin ? ['Actions'] : [])].map((h) => (
+              {['Date', 'Description', 'Category', 'Type', 'Amount', 'Actions'].map((h) => (
                 <th
                   key={h}
                   className="text-left px-5 py-[11px] text-[11px] font-bold tracking-[0.5px] uppercase text-[var(--text-muted)]"
@@ -83,7 +83,7 @@ export default function TransactionTable() {
           <tbody>
             {paged.length === 0 ? (
               <tr>
-                <td colSpan={isAdmin ? 6 : 5} className="px-5 py-14 text-center">
+                <td colSpan={6} className="px-5 py-14 text-center">
                   <div className="flex flex-col items-center gap-3">
                     <div className="flex items-center justify-center rounded-2xl w-14 h-14 bg-[rgba(255,255,255,0.04)] mb-1">
                       <Inbox size={26} className="text-[var(--text-muted)]" />
@@ -102,11 +102,9 @@ export default function TransactionTable() {
             ) : (
               paged.map((tx, i) => (
                 <tr
-                  key={tx.id}
+                  key={tx._id}
                   className="transition-[background] duration-[120ms] hover:bg-[rgba(255,255,255,0.025)]"
-                  style={{
-                    borderBottom: i < paged.length - 1 ? '1px solid var(--border)' : 'none',
-                  }}
+                  style={{ borderBottom: i < paged.length - 1 ? '1px solid var(--border)' : 'none' }}
                 >
                   <td className="px-5 py-[11px] text-[13px] text-[var(--text-secondary)] whitespace-nowrap">
                     {formatDate(tx.date)}
@@ -131,31 +129,28 @@ export default function TransactionTable() {
                       {formatCurrency(tx.amount)}
                     </span>
                   </td>
-                  {isAdmin && (
-                    <td className="px-5 py-[11px]">
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => setEditingTransaction(tx)}
-                          className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(108,99,255,0.14)] hover:text-[var(--accent)]"
-                        >
-                          <Pencil size={13} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(tx.id)}
-                          className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(248,113,113,0.14)] hover:text-[#F87171]"
-                        >
-                          <Trash2 size={13} />
-                        </button>
-                      </div>
-                    </td>
-                  )}
+                  <td className="px-5 py-[11px]">
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => setEditingTransaction(tx)}
+                        className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(108,99,255,0.14)] hover:text-[var(--accent)]"
+                      >
+                        <Pencil size={13} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(tx._id)}
+                        className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(248,113,113,0.14)] hover:text-[#F87171]"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-
 
       <div className="flex items-center justify-between px-5 py-[10px] border-t border-[var(--border)]">
         <p className="text-xs text-[var(--text-muted)]">
@@ -183,7 +178,6 @@ export default function TransactionTable() {
           </button>
         </div>
       </div>
-
 
       {editingTransaction && (
         <AddTransactionModal

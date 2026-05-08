@@ -10,9 +10,16 @@ const routeTitles = {
 
 export default function Header() {
   const { pathname } = useLocation();
-  const { darkMode, toggleDarkMode } = useStore();
+  const { darkMode, toggleDarkMode, user } = useStore();
 
   const title = routeTitles[pathname] ?? "Dashboard";
+  const userName = user?.name ?? "";
+  const initials = userName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return (
     <header className="h-[64px] shrink-0 flex items-center px-6 gap-4 bg-[var(--bg-secondary)] border-b border-[var(--border)]">
@@ -22,7 +29,6 @@ export default function Header() {
       </h1>
 
       <div className="flex-1" />
-
 
       <div className="flex items-center gap-1">
 
@@ -39,26 +45,20 @@ export default function Header() {
           <span className="absolute top-2 right-2 w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
         </button>
 
-
         <button className="w-9 h-9 rounded-xl flex items-center justify-center transition-colors text-[var(--text-secondary)] hover:bg-[var(--bg-card)]">
           <MessageSquare size={17} />
         </button>
 
-
         <div className="w-px h-6 mx-1 bg-[var(--border)]" />
-
 
         <button className="flex items-center gap-2.5 px-2 py-1.5 rounded-xl transition-colors hover:bg-[var(--bg-card)]">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0 bg-[var(--accent)]">
-            RS
+            {initials}
           </div>
           <span className="text-sm font-semibold hidden md:block text-[var(--text-primary)]">
-            Rakshit Sheoran
+            {userName}
           </span>
-          <ChevronDown
-            size={14}
-            className="hidden md:block text-[var(--text-muted)]"
-          />
+          <ChevronDown size={14} className="hidden md:block text-[var(--text-muted)]" />
         </button>
       </div>
     </header>
