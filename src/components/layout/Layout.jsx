@@ -4,13 +4,21 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import BottomNav from './BottomNav'
 import useStore from '../../store/useStore'
+import { api } from '../../services/api'
 
 export default function Layout() {
   const darkMode = useStore((s) => s.darkMode)
+  const setTransactions = useStore((s) => s.setTransactions)
 
   useEffect(() => {
     document.documentElement.classList.toggle('light', !darkMode)
   }, [darkMode])
+
+  useEffect(() => {
+    api.getTransactions()
+      .then((data) => setTransactions(data))
+      .catch(() => {})
+  }, [setTransactions])
 
   return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">

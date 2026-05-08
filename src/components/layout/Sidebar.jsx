@@ -3,9 +3,6 @@ import {
   LayoutDashboard,
   ArrowLeftRight,
   BarChart2,
-  User,
-  Settings,
-  HelpCircle,
   LogOut,
   TrendingUp,
 } from "lucide-react";
@@ -15,12 +12,6 @@ const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
   { to: "/transactions", label: "Transactions", icon: ArrowLeftRight },
   { to: "/insights", label: "Insights", icon: BarChart2 },
-];
-
-const bottomLinks = [
-  { icon: User, label: "Profile" },
-  { icon: Settings, label: "Settings" },
-  { icon: HelpCircle, label: "Help" },
 ];
 
 export default function Sidebar() {
@@ -59,13 +50,6 @@ export default function Sidebar() {
       <div className="mx-3 border-t border-[var(--border)]" />
 
       <div className="px-3 py-4 flex flex-col gap-0.5">
-        {bottomLinks.map(({ icon: Icon, label }) => (
-          <button key={label} className="sidebar-link">
-            <Icon size={17} />
-            {label}
-          </button>
-        ))}
-
         <button onClick={handleLogout} className="sidebar-link logout-btn">
           <LogOut size={17} />
           Logout

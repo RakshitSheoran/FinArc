@@ -1,22 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import useStore from '../store/useStore'
-import { api } from '../services/api'
 import TransactionFilters from '../components/transactions/TransactionFilters'
 import TransactionTable from '../components/transactions/TransactionTable'
 import AddTransactionModal from '../components/transactions/AddTransactionModal'
 
 export default function Transactions() {
-  const { setTransactions } = useStore()
   const [modalOpen, setModalOpen] = useState(false)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    api.getTransactions()
-      .then((data) => setTransactions(data))
-      .catch(() => {})
-      .finally(() => setLoading(false))
-  }, [setTransactions])
 
   return (
     <div className="flex flex-col gap-5">
@@ -33,13 +22,7 @@ export default function Transactions() {
           </button>
         </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center py-20 text-[var(--text-muted)] text-sm">
-            Loading transactions...
-          </div>
-        ) : (
-          <TransactionTable />
-        )}
+        <TransactionTable />
       </div>
 
       {modalOpen && <AddTransactionModal onClose={() => setModalOpen(false)} />}
