@@ -1,6 +1,12 @@
 import { useState } from "react";
 import {
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
 } from "recharts";
 import { ChevronDown } from "lucide-react";
 import useStore from "../../store/useStore";
@@ -12,9 +18,15 @@ function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
     <div className="chart-tooltip">
-      <p className="text-xs font-semibold mb-2 text-[var(--text-muted)]">{label}</p>
+      <p className="text-xs font-semibold mb-2 text-[var(--text-muted)]">
+        {label}
+      </p>
       {payload.map((p) => (
-        <p key={p.dataKey} className="text-sm font-semibold" style={{ color: p.color }}>
+        <p
+          key={p.dataKey}
+          className="text-sm font-semibold"
+          style={{ color: p.color }}
+        >
           {p.name}: ₹{p.value.toLocaleString()}
         </p>
       ))}
@@ -34,21 +46,27 @@ export default function AnalyticsChart() {
   return (
     <div className="card flex flex-col gap-4 shadow-md">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="font-bold text-base text-[var(--text-primary)]">Analytics</h2>
+        <h2 className="font-bold text-base text-[var(--text-primary)]">
+          Analytics
+        </h2>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowIncome((v) => !v)}
-            className={`badge transition-all ${showIncome
-              ? "bg-[rgba(108,99,255,0.18)] text-[var(--accent)] border border-[rgba(108,99,255,0.35)]"
-              : "bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] border border-[var(--border)]"}`}
+            className={`badge transition-all ${
+              showIncome
+                ? "bg-[rgba(108,99,255,0.18)] text-[var(--accent)] border border-[rgba(108,99,255,0.35)]"
+                : "bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] border border-[var(--border)]"
+            }`}
           >
             Income
           </button>
           <button
             onClick={() => setShowExpenses((v) => !v)}
-            className={`badge transition-all ${showExpenses
-              ? "bg-[rgba(245,158,11,0.15)] text-[var(--amber)] border border-[rgba(245,158,11,0.35)]"
-              : "bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] border border-[var(--border)]"}`}
+            className={`badge transition-all ${
+              showExpenses
+                ? "bg-[rgba(245,158,11,0.15)] text-[var(--amber)] border border-[rgba(245,158,11,0.35)]"
+                : "bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] border border-[var(--border)]"
+            }`}
           >
             Expenses
           </button>
@@ -64,10 +82,15 @@ export default function AnalyticsChart() {
                 {periods.map((p) => (
                   <button
                     key={p}
-                    onClick={() => { setPeriod(p); setDropdownOpen(false); }}
-                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${period === p
-                      ? "text-[var(--accent)] bg-[rgba(108,99,255,0.1)]"
-                      : "text-[var(--text-secondary)] hover:bg-[rgba(255,255,255,0.04)]"}`}
+                    onClick={() => {
+                      setPeriod(p);
+                      setDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-2.5 text-xs font-semibold transition-colors ${
+                      period === p
+                        ? "text-[var(--accent)] bg-[rgba(108,99,255,0.1)]"
+                        : "text-[var(--text-secondary)] hover:bg-[rgba(255,255,255,0.04)]"
+                    }`}
                   >
                     {p}
                   </button>
@@ -85,23 +108,90 @@ export default function AnalyticsChart() {
       ) : (
         <div className="h-[200px] sm:h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 5, right: 4, left: -10, bottom: 0 }}>
+            <AreaChart
+              data={data}
+              margin={{ top: 5, right: 4, left: -10, bottom: 0 }}
+            >
               <defs>
                 <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.28} />
-                  <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+                  <stop
+                    offset="0%"
+                    stopColor="var(--accent)"
+                    stopOpacity={0.28}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--accent)"
+                    stopOpacity={0}
+                  />
                 </linearGradient>
                 <linearGradient id="expensesGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--amber)" stopOpacity={0.22} />
-                  <stop offset="100%" stopColor="var(--amber)" stopOpacity={0} />
+                  <stop
+                    offset="0%"
+                    stopColor="var(--amber)"
+                    stopOpacity={0.22}
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--amber)"
+                    stopOpacity={0}
+                  />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-              <XAxis dataKey="name" tick={{ fill: "var(--text-muted)", fontSize: 11, fontFamily: "Plus Jakarta Sans" }} axisLine={false} tickLine={false} dy={8} />
-              <YAxis tick={{ fill: "var(--text-muted)", fontSize: 11, fontFamily: "Plus Jakarta Sans" }} axisLine={false} tickLine={false} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
-              <Tooltip content={<CustomTooltip />} cursor={{ stroke: "var(--border)", strokeWidth: 1 }} />
-              {showIncome && <Area type="monotone" dataKey="Income" name="Income" stroke="var(--accent)" strokeWidth={2.5} fill="url(#incomeGrad)" dot={false} activeDot={{ r: 4, fill: "var(--accent)", strokeWidth: 0 }} />}
-              {showExpenses && <Area type="monotone" dataKey="Expenses" name="Expenses" stroke="var(--amber)" strokeWidth={2.5} fill="url(#expensesGrad)" dot={false} activeDot={{ r: 4, fill: "var(--amber)", strokeWidth: 0 }} />}
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="var(--border)"
+                vertical={false}
+              />
+              <XAxis
+                dataKey="name"
+                tick={{
+                  fill: "var(--text-muted)",
+                  fontSize: 11,
+                  fontFamily: "Plus Jakarta Sans",
+                }}
+                axisLine={false}
+                tickLine={false}
+                dy={8}
+              />
+              <YAxis
+                tick={{
+                  fill: "var(--text-muted)",
+                  fontSize: 11,
+                  fontFamily: "Plus Jakarta Sans",
+                }}
+                axisLine={false}
+                tickLine={false}
+                tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                content={<CustomTooltip />}
+                cursor={{ stroke: "var(--border)", strokeWidth: 1 }}
+              />
+              {showIncome && (
+                <Area
+                  type="monotone"
+                  dataKey="Income"
+                  name="Income"
+                  stroke="var(--accent)"
+                  strokeWidth={2.5}
+                  fill="url(#incomeGrad)"
+                  dot={false}
+                  activeDot={{ r: 4, fill: "var(--accent)", strokeWidth: 0 }}
+                />
+              )}
+              {showExpenses && (
+                <Area
+                  type="monotone"
+                  dataKey="Expenses"
+                  name="Expenses"
+                  stroke="var(--amber)"
+                  strokeWidth={2.5}
+                  fill="url(#expensesGrad)"
+                  dot={false}
+                  activeDot={{ r: 4, fill: "var(--amber)", strokeWidth: 0 }}
+                />
+              )}
             </AreaChart>
           </ResponsiveContainer>
         </div>

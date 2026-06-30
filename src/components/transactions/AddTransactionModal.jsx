@@ -51,8 +51,8 @@ const AddTransactionModal = ({ transaction = null, onClose }) => {
       }
 
       if (isEditing) {
-        const updated = await api.editTransaction(transaction._id, payload)
-        editTransactionLocal(transaction._id, updated)
+        const updated = await api.editTransaction(transaction.id, payload)
+        editTransactionLocal(transaction.id, updated)
       } else {
         const created = await api.addTransaction(payload)
         addTransactionLocal(created)

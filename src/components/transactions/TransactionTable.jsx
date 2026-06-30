@@ -102,7 +102,7 @@ export default function TransactionTable() {
             ) : (
               paged.map((tx, i) => (
                 <tr
-                  key={tx._id}
+                  key={tx.id}
                   className="transition-[background] duration-[120ms] hover:bg-[rgba(255,255,255,0.025)]"
                   style={{ borderBottom: i < paged.length - 1 ? '1px solid var(--border)' : 'none' }}
                 >
@@ -138,7 +138,7 @@ export default function TransactionTable() {
                         <Pencil size={13} />
                       </button>
                       <button
-                        onClick={() => handleDelete(tx._id)}
+                        onClick={() => handleDelete(tx.id)}
                         className="flex items-center justify-center rounded-lg transition-colors w-7 h-7 text-[var(--text-muted)] hover:bg-[rgba(248,113,113,0.14)] hover:text-[#F87171]"
                       >
                         <Trash2 size={13} />

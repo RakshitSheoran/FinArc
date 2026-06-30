@@ -49,23 +49,29 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg-primary)] px-4">
       <div className="w-full max-w-md">
-
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[var(--accent)]">
             <TrendingUp size={18} color="#fff" />
           </div>
-          <span className="font-bold text-2xl text-[var(--text-primary)]">FinArc</span>
+          <span className="font-bold text-2xl text-[var(--text-primary)]">
+            FinArc
+          </span>
         </div>
 
         <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-2xl p-8">
-          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-1">Welcome back</h2>
-          <p className="text-sm text-[var(--text-muted)] mb-6">Sign in to your account</p>
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-1">
+            Welcome back
+          </h2>
+          <p className="text-sm text-[var(--text-muted)] mb-6">
+            Sign in to your account
+          </p>
 
           {/* Cold start warning */}
           {isWakingUp && (
             <div className="mb-4 px-4 py-3 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-sm">
-              Server is waking up — this takes ~30 seconds on first load. Please wait...
+              Server is waking up — this takes ~30 seconds on first load. Please
+              wait...
             </div>
           )}
 
@@ -77,7 +83,9 @@ export default function Login() {
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-[var(--text-secondary)]">Email</label>
+              <label className="text-sm font-medium text-[var(--text-secondary)]">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
@@ -89,7 +97,9 @@ export default function Login() {
             </div>
 
             <div className="flex flex-col gap-1.5">
-              <label className="text-sm font-medium text-[var(--text-secondary)]">Password</label>
+              <label className="text-sm font-medium text-[var(--text-secondary)]">
+                Password
+              </label>
               <input
                 type="password"
                 value={password}
@@ -111,7 +121,10 @@ export default function Login() {
 
           <p className="mt-5 text-center text-sm text-[var(--text-muted)]">
             Don't have an account?{" "}
-            <Link to="/register" className="text-[var(--accent)] font-medium hover:underline">
+            <Link
+              to="/register"
+              className="text-[var(--accent)] font-medium hover:underline"
+            >
               Create one
             </Link>
           </p>

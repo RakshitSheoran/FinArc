@@ -24,12 +24,12 @@ const useStore = create(
       editTransactionLocal: (id, updated) =>
         set((state) => ({
           transactions: state.transactions.map((t) =>
-            t._id === id ? { ...t, ...updated } : t
+            t.id === id ? { ...t, ...updated } : t
           ),
         })),
       deleteTransactionLocal: (id) =>
         set((state) => ({
-          transactions: state.transactions.filter((t) => t._id !== id),
+          transactions: state.transactions.filter((t) => t.id !== id),
         })),
 
       // ── Filters (local only) ──────────────────────────────────────────────
